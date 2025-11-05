@@ -15,20 +15,17 @@ class SCBusServo : public Component, public UARTDevice {
   void write_angle(float deg) {
     if (deg < min_angle) deg = min_angle;
     if (deg > max_angle) deg = max_angle;
-
     uint16_t pos = (uint16_t) lroundf(deg * SCALE);
 
     uint8_t pkt[11];
     int i = 0;
-    pkt[i++] = 0xFF;
-    pkt[i++] = 0xFF;
+    pkt[i++] = 0xFF; pkt[i++] = 0xFF;
     pkt[i++] = servo_id;
     pkt[i++] = 0x07;
-    pkt[i++] = 0x03;  // WRITE
-    pkt[i++] = 0x2A;  // GOAL_POS
+    pkt[i++] = 0x03;
+    pkt[i++] = 0x2A;
     pkt[i++] = (uint8_t)(pos & 0xFF);
     pkt[i++] = (uint8_t)(pos >> 8);
-
     uint8_t sum = 0;
     for (int j = 2; j < i; ++j) sum += pkt[j];
     pkt[i++] = (uint8_t)(~sum);
