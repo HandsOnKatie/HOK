@@ -1,0 +1,6 @@
+scservo:
+  config_schema:
+    - uart_id
+    - servo_id: int
+    - min_angle: float
+    - max_angle: float
